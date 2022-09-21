@@ -178,6 +178,7 @@ paths:
       tags:
         - restaurant
     parameters: [ ]
+
     get:
       summary: Encontrar restaurantes de acuerdo al tipo de usuario logeado
       operationId: get-restaurant
@@ -202,6 +203,43 @@ paths:
         owner: encuentra sus restaurantes;
         user: encuentra los restaurantes más cercanos a su ubicación
 
+
+  /restaurant/filter:
+    get:
+      summary: Encontrar restaurantes de acuerdo a filtros
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurants'
+          description: OK
+        '404':
+          description: No se encontraron restaurantes
+      tags:
+        - restaurant
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: authentication
+          description: authentication token
+        - in: query
+          name: distance
+          schema:
+            type: string
+          description: Distancia máxima del restaurant hacia la ubicación del usuario
+        - in: query
+          name: foodType
+          schema:
+            type: string
+          description: Tipo de comida del restaurant
+        - in: query
+          name: priceRange
+          schema:
+            type: string
+          description: Rango de precio del restaurant
+          
   /restaurant/{id}:
       parameters:
         - schema:
