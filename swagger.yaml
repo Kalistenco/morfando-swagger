@@ -1,0 +1,136 @@
+openapi: 3.0.3
+info:
+  title: Morfando API
+  description: Especificación de la API de morfando app
+  version: 1.0.0
+tags:
+  - name: user
+    description: Operaciones con usuarios
+paths:
+  /user/owner:
+    post:
+      tags:
+        - user
+      summary: Creación de usuario de tipo dueño
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Owner'
+      responses:
+        default:
+          description: successful operation
+  /user/customer:
+    post:
+      tags:
+        - user
+      summary: Creación de usuario de tipo cliente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        default:
+          description: successful operation
+  /user/owner/login:
+    post:
+      tags:
+        - user
+      summary: Logeo de usuario de tipo dueño
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Owner'
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid username/password supplied
+  /user/customer/login:
+    post:
+      tags:
+        - user
+      summary: Logeo de usuario de tipo cliente
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid username supplied
+  /user/customer/{email}:
+    put:
+      tags:
+        - user
+      summary: Actualización de datos de un cliente
+      description: .
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: .
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerComplete'
+      responses:
+        default:
+          description: successful operation
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: .
+      parameters:
+        - name: email
+          in: path
+          description: .
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+components:
+  schemas:
+    Owner:
+      type: object
+      properties:
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+    Customer:
+      type: object
+      properties:
+        email:
+          type: string
+          example: john@email.com
+    CustomerComplete:
+      type: object
+      properties:
+        name:
+          type: string
+          example: john
+        lastName:
+          type: string
+          example: jackson
+        profilePhoto:
+          type: string
+          example: fwfw3r323
