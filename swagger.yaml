@@ -9,6 +9,7 @@ tags:
   - name: restaurant
     description: Operaciones con restaurantes
 paths:
+
   /user/owner:
     post:
       tags:
@@ -24,6 +25,7 @@ paths:
           description: OK
         '400':
           description: User already exists
+
   /user/customer:
     post:
       tags:
@@ -39,6 +41,7 @@ paths:
           description: OK
         '400':
           description: User already exists
+
   /user/owner/login:
     post:
       tags:
@@ -55,11 +58,29 @@ paths:
           description: OK
         '400':
           description: Invalid username/password supplied
-  /user/owner/recover:
+
+  /user/owner/recover/code:
     post:
       tags:
         - user
-      summary: Recuperación de usuario de tipo dueño
+      summary: Código de recuperación de usuario de tipo dueño
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OwnerCode'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid username supplied or code
+
+  /user/owner/recover/password:
+    post:
+      tags:
+        - user
+      summary: Creación de nueva contraseña para usuario de tipo dueño
       description: ''
       requestBody:
         content:
@@ -71,6 +92,7 @@ paths:
           description: OK
         '400':
           description: Invalid username supplied
+
   /user/customer/login:
     post:
       tags:
@@ -87,6 +109,7 @@ paths:
           description: OK
         '400':
           description: Invalid username supplied
+
   /user/customer/{email}:
     put:
       tags:
@@ -113,7 +136,7 @@ paths:
     delete:
       tags:
         - user
-      summary: Delete user
+      summary: Eliminación de usuario
       description: .
       parameters:
         - name: email
@@ -127,6 +150,7 @@ paths:
           description: OK
         '404':
           description: User with specified email does not exist
+
   /restaurant:
     post:
       summary: Creación de un restaurant
@@ -159,6 +183,10 @@ paths:
       operationId: get-restaurant
       responses:
         '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurants'
           description: OK
         '404':
           description: No se encontraron restaurantes
@@ -173,6 +201,7 @@ paths:
       description: |-
         owner: encuentra sus restaurantes;
         user: encuentra los restaurantes más cercanos a su ubicación
+
   /restaurant/{id}:
       parameters:
         - schema:
@@ -181,7 +210,7 @@ paths:
           in: path
           required: true
       put:
-        summary: Actualización de un restuarnate
+        summary: Actualización de un restaurante
         operationId: put-restaurant-id
         responses:
           '200':
@@ -205,8 +234,11 @@ paths:
                     $ref: '#/components/schemas/Restaurant'
         tags:
           - restaurant
+
+
 components:
   schemas:
+
     Owner:
       type: object
       properties:
@@ -216,6 +248,7 @@ components:
         password:
           type: string
           example: '12345'
+
     OwnerRecover:
       type: object
       properties:
@@ -229,12 +262,23 @@ components:
           type: string
           example: '544543'
 
+    OwnerCode:
+      type: object
+      properties:
+        email:
+          type: string
+          example: john@email.com
+        code:
+          type: string
+          example: 12345
+
     Customer:
       type: object
       properties:
         email:
           type: string
           example: john@email.com
+
     CustomerComplete:
       type: object
       properties:
@@ -248,6 +292,13 @@ components:
           type: object
           items:
             $ref: '#/components/schemas/Image'
+
+    Restaurants:
+      type: array
+      items:
+        $ref: '#/components/schemas/Restaurant'
+
+
     Restaurant:
       title: Restaurant
       x-stoplight:
@@ -315,8 +366,6 @@ components:
                       - praliné de maní
                     suitableVegan: true
                     suitableForCeliac: true
-          owner:
-            email: john@email.com
           priceRange: BAJO
       description: ''
       properties:
@@ -387,9 +436,9 @@ components:
           type: string
         categories:
           type: array
-
           items:
             $ref: '#/components/schemas/Category'
+
     Schedule:
       title: Schedule
       x-stoplight:
@@ -402,6 +451,7 @@ components:
           type: string
         closing:
           type: string
+   
     Item_categoria:
       title: Items_categoria
       x-stoplight:
@@ -424,6 +474,7 @@ components:
           type: boolean
         suitableForCeliac:
           type: boolean
+    
     Image:
       title: Image
       x-stoplight:
@@ -434,6 +485,7 @@ components:
           type: string
         type:
           type: string
+    
     Category:
       title: Category
       x-stoplight:
