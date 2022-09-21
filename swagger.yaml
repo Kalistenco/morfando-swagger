@@ -225,20 +225,30 @@ paths:
           name: authentication
           description: authentication token
         - in: query
+          name: name
+          schema:
+            type: string
+          description: Nombre del restaurant
+        - in: query
           name: distance
           schema:
             type: string
           description: Distancia máxima del restaurant hacia la ubicación del usuario
         - in: query
-          name: foodType
+          name: nameCategory
           schema:
             type: string
-          description: Tipo de comida del restaurant
+          description: Categoría perteneciente al retaurant
         - in: query
           name: priceRange
           schema:
             type: string
           description: Rango de precio del restaurant
+        - schema:
+            type: string
+          in: query
+          name: stars
+          description: Cantidad de estrellas del restaurant
           
   /restaurant/{id}:
       parameters:
@@ -272,6 +282,47 @@ paths:
                     $ref: '#/components/schemas/Restaurant'
         tags:
           - restaurant
+
+  /favorite:
+    get:
+      summary: Encontrar restaurantes favoritos de acuerdo al cliente
+      tags:
+        - restaurant
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: authentication
+          description: authentication token      
+      responses:
+        '200':
+          description: OK
+      operationId: get-favorite-idCliente
+    parameters: []
+  /review:
+    post:
+      summary: Crear review de un restaurant
+      tags:
+        - restaurant
+      operationId: post-review
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: authentication
+          description: authentication token
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                '':
+                  $ref: '#/components/schemas/review'
+      description: agrega un review a un restaurant
 
 
 components:
@@ -549,3 +600,34 @@ components:
                 - string
               suitableVegan: true
               suitableForCeliac: true
+
+    review:
+      title: review
+      x-stoplight:
+        id: 5tre7jyhnsgf7
+      type: object
+      properties:
+        id:
+          type: string
+        comment:
+          type: string
+        numberOfStars:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+        idRestaurant:
+          type: string
+    Favorite:
+      title: Favorite
+      x-stoplight:
+        id: ypejh8zcg9o5h
+      type: object
+      properties:
+        id:
+          type: string
+        '':
+          type: string
