@@ -120,6 +120,7 @@ paths:
         - name: email
           in: path
           required: true
+          description: email del cliente
           schema:
             type: string
       requestBody:
@@ -258,6 +259,7 @@ paths:
             type: string
           name: id
           in: path
+          description: restaurant id
           required: true
       put:
         summary: Actualización de un restaurante
@@ -300,6 +302,10 @@ paths:
           description: authentication token
       responses:
         '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurants'
           description: OK
       operationId: get-favorite-idCliente
     parameters: []
@@ -311,6 +317,7 @@ paths:
         name: id
         in: path
         required: true
+        description: restaurant id
       - schema:
           type: string
         in: header
@@ -325,10 +332,6 @@ paths:
       operationId: post-favorite
       responses:
         '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Restaurants'
           description: OK
         '404':
           description: No se encontraron restaurantes
