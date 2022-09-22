@@ -249,7 +249,7 @@ paths:
           in: query
           name: stars
           description: Cantidad de estrellas del restaurant
-          
+
   /restaurant/{id}:
       parameters:
         - schema:
@@ -285,7 +285,7 @@ paths:
 
   /favorite:
     get:
-      summary: Encontrar restaurantes favoritos de acuerdo al cliente
+      summary: Encontrar restaurantes favoritos del cliente
       tags:
         - restaurant
       parameters:
@@ -293,12 +293,25 @@ paths:
             type: string
           in: header
           name: authentication
-          description: authentication token      
+          description: authentication token
       responses:
         '200':
           description: OK
       operationId: get-favorite-idCliente
     parameters: []
+    post:
+      summary: agregar un restaurante a favoritos
+      tags:
+        - restaurant
+      operationId: post-favorite
+      responses:
+        '201':
+          description: Created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Favorite'
   /review:
     post:
       summary: Crear review de un restaurant
@@ -323,11 +336,24 @@ paths:
                 '':
                   $ref: '#/components/schemas/review'
       description: agrega un review a un restaurant
-
-
+  '/favorite/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    delete:
+      summary: Elimina un restaurante de favoritos
+      tags:
+        - restaurant
+      operationId: delete-favorite-id
+      responses:
+        '200':
+          description: OK
+      description: ''
 components:
   schemas:
-
     Owner:
       type: object
       properties:
@@ -540,7 +566,7 @@ components:
           type: string
         closing:
           type: string
-   
+
     Item_categoria:
       title: Items_categoria
       x-stoplight:
@@ -563,7 +589,7 @@ components:
           type: boolean
         suitableForCeliac:
           type: boolean
-    
+
     Image:
       title: Image
       x-stoplight:
@@ -574,7 +600,7 @@ components:
           type: string
         type:
           type: string
-    
+
     Category:
       title: Category
       x-stoplight:
@@ -621,6 +647,10 @@ components:
             - 5
         idRestaurant:
           type: string
+      example:
+        comment: Muy buena la comida
+        numberO: 5
+        idRestaurant: '123'
     Favorite:
       title: Favorite
       x-stoplight:
@@ -629,5 +659,10 @@ components:
       properties:
         id:
           type: string
-        '':
+        idRestaurant:
           type: string
+        idCustomer:
+          type: string
+      example:
+        idRestaurant: '123'
+        idCustomer: '1'
