@@ -163,6 +163,7 @@ paths:
             type: string
           in: header
           name: Authentication
+          required: true
           description: authentication token
       requestBody:
         content:
@@ -198,10 +199,12 @@ paths:
             type: string
           in: header
           name: authentication
+          required: true
           description: authentication token
       description: |-
         owner: encuentra sus restaurantes;
         user: encuentra los restaurantes más cercanos a su ubicación
+
   /restaurant/filter:
     get:
       summary: Encontrar restaurantes de acuerdo a filtros
@@ -221,6 +224,7 @@ paths:
             type: string
           in: header
           name: authentication
+          required: true
           description: authentication token
         - in: query
           name: name
@@ -269,6 +273,7 @@ paths:
               type: string
             in: header
             name: Authentication
+            required: true
             description: authentication token
         requestBody:
           content:
@@ -291,14 +296,30 @@ paths:
             type: string
           in: header
           name: authentication
+          required: true
           description: authentication token
       responses:
         '200':
           description: OK
       operationId: get-favorite-idCliente
     parameters: []
+
+  /favorite/{id}:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        in: header
+        name: authentication
+        required: true
+        description: authentication token
+
     post:
-      summary: agregar un restaurante a favoritos
+      summary: Agrega un restaurante a favoritos
       tags:
         - restaurant
       operationId: post-favorite
@@ -311,11 +332,6 @@ paths:
           description: OK
         '404':
           description: No se encontraron restaurantes
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Favorite'
 
   /review:
     post:
@@ -341,13 +357,6 @@ paths:
               $ref: '#/components/schemas/review'
       description: agrega un review a un restaurant
       
-  /favorite/{id}:
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
     delete:
       summary: Elimina un restaurante de favoritos
       tags:
@@ -359,6 +368,7 @@ paths:
         '404':
           description: No se encontraró el restaurant
       description: ''
+
 
 components:
   schemas:
@@ -659,18 +669,3 @@ components:
         comment: Muy buena la comida
         numberO: 5
         idRestaurant: '123'
-    Favorite:
-      title: Favorite
-      x-stoplight:
-        id: ypejh8zcg9o5h
-      type: object
-      properties:
-        id:
-          type: string
-        idRestaurant:
-          type: string
-        idCustomer:
-          type: string
-      example:
-        idRestaurant: '123'
-        idCustomer: '1'
