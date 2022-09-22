@@ -202,8 +202,6 @@ paths:
       description: |-
         owner: encuentra sus restaurantes;
         user: encuentra los restaurantes más cercanos a su ubicación
-
-
   /restaurant/filter:
     get:
       summary: Encontrar restaurantes de acuerdo a filtros
@@ -305,13 +303,20 @@ paths:
         - restaurant
       operationId: post-favorite
       responses:
-        '201':
-          description: Created
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurants'
+          description: OK
+        '404':
+          description: No se encontraron restaurantes
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Favorite'
+
   /review:
     post:
       summary: Crear review de un restaurant
@@ -327,16 +332,16 @@ paths:
       responses:
         '200':
           description: OK
+        '404':
+          description: No se encontraró el restaurant
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                '':
-                  $ref: '#/components/schemas/review'
+              $ref: '#/components/schemas/review'
       description: agrega un review a un restaurant
-  '/favorite/{id}':
+      
+  /favorite/{id}:
     parameters:
       - schema:
           type: string
@@ -351,7 +356,10 @@ paths:
       responses:
         '200':
           description: OK
+        '404':
+          description: No se encontraró el restaurant
       description: ''
+
 components:
   schemas:
     Owner:
